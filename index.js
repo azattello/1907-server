@@ -65,36 +65,36 @@ app.get('/api/download/:filename', (req, res) => {
 });
 
 // Запуск сервера
-const start = async () => {
-    try {
-        await mongoose.connect(config.get('dbUrl'));
-        app.listen(PORT, () => {
-            console.log("Server started on the port ", PORT);
-        });
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-// HTTPS options
-// const httpsOptions = {
-//     key: fs.readFileSync('/etc/letsencrypt/live/1907.kz/privkey.pem'),
-//     cert: fs.readFileSync('/etc/letsencrypt/live/1907.kz/fullchain.pem')
-// };
-
 // const start = async () => {
 //     try {
 //         await mongoose.connect(config.get('dbUrl'));
-
-//         // Create HTTPS server
-//         https.createServer(httpsOptions, app).listen(PORT, () => {
+//         app.listen(PORT, () => {
 //             console.log("Server started on the port ", PORT);
 //         });
-        
 //     } catch (error) {
 //         console.log(error);
 //     }
-// }
+// };
+
+// HTTPS options
+const httpsOptions = {
+    key: fs.readFileSync('/etc/letsencrypt/live/1907.kz/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/1907.kz/fullchain.pem')
+};
+
+const start = async () => {
+    try {
+        await mongoose.connect(config.get('dbUrl'));
+
+        // Create HTTPS server
+        https.createServer(httpsOptions, app).listen(PORT, () => {
+            console.log("Server started on the port ", PORT);
+        });
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 
 start();
